@@ -4,10 +4,12 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+		<title>DC Manila 2018</title>
 
 		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/black.css">
+		<link rel="stylesheet" href="css/theme/drupalcamp.css">
+    <!-- <link rel="stylesheet" href="css/theme/black.css"> -->
+    <link rel="stylesheet" href="css/theme/league.css">
 
 		<!-- Theme used for syntax highlighting of code -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
@@ -24,8 +26,373 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
+				<section>
+          <img src="images/docker/moby.png" alt="" style="background: none;
+          border: none;
+          box-shadow: none;
+          width: 229px;">
+          <img src="images/drupal/druplicon-logos/druplicon-large.png" alt="" style="background: none;
+          border: none;
+          width: 141px;
+          margin-left: 1em;
+          box-shadow: none;
+          padding-bottom: 17px;">
+					<h1 style="font-size: 2em;">Drupal development with Docker</h1>
+        </section>
+
+        <section>
+          <h2>About me</h2>
+        </section>
+
+				<section>
+					<h2>About you</h2>
+					<aside class="notes">
+						<ul>
+							<li>Who has heared about Docker?</li>
+							<li>Who has installed Docker in machine?</li>
+							<li>Who has tried using Docker for development?</li>
+						</ul>
+					</aside>
+				</section>
+
+				<section>
+					<blockquote>
+						&ldquo;Works in my machine&ldquo;
+					</blockquote>
+				</section>
+
+				<section>
+					<section>
+						<h2>Docker</h2>
+						<img src="images/laurel-docker-containers.png" alt="" style="width: 600px;">
+						<aside class="notes">
+							A platform for developers and sysadmins to develop, deploy, and run applications with containers.
+						</aside>
+					</section>
+
+					<section>
+						<h2>Containers</h2>
+						<ul>
+							<li class="fragment">Isolate applications like a VM</li>
+							<li class="fragment">Doesn't create a whole VM</li>
+							<li class="fragment">Provides significant performance boost and reduces the size of the application</li>
+						</ul>
+					</section>
+
+					<section>
+						<h2>Comparison</h2>
+						<div style="float: left; width: 45%;">
+							<strong>VM</strong>
+							<img src="/images/VM@2x.png" alt="" style="background: none;
+              border: none;
+              box-shadow: none;">
+						</div>
+						<div class="fragment" style="float: right; width: 45%;">
+							<strong>Containers</strong>
+							<img src="/images/Container@2x.png" alt="" style="background: none;
+              border: none;
+              box-shadow: none;">
+						</div>
+
+						<aside class="notes">
+							<h3>VM</h3>
+							<p>runs a full-blown “guest” operating system with virtual access to host resources through a hypervisor</p>
+							<h3>Containers</h3>
+							<p>runs natively on Linux and shares the kernel of the host machine with other containers</p>
+						</aside>
+					</section>
+
+					<section>
+						<h2>Common terms</h2>
+						<ul>
+							<li>Images</li>
+							<li>Containers</li>
+						</ul>
+
+						<aside class="notes">
+							<strong>Images:</strong>
+							<ul>
+								<li>executable package that includes everything needed to run an application</li>
+							</ul>
+							<strong>Containers</strong>
+							<ul>
+								<li>runtime instance of an image</li>
+							</ul>
+						</aside>
+					</section>
+				</section>
+
+				<section>
+					<h2>Dockerfile</h2>
+					<pre><code class="dockerfile hljs">
+  FROM php:7.1-apache
+
+  RUN apt-get update && apt-get install mysql-client -y
+
+  COPY /code/ /var/www/html/new/place
+
+  WORKDIR /var/www/html/new/place
+					</code></pre>
+					<aside class="notes">
+						<p>a text document that contains all the commands a user could call on the command line to assemble an image</p>
+					</aside>
+				</section>
+
+				<section>
+          <section>
+            <h2>Docker Commands</h2>
+          </section>
+
+          <section>
+            <p>Build an image from a Dockerfile</p>
+            <pre><code class="bash hljs">
+  docker build [OPTIONS] CONTAINER [CONTAINER...]
+            </code></pre>
+          </section>
+
+					<section>
+						<p>Execute an image</p>
+						<pre><code class="bash hljs">
+  docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
+						</code></pre>
+					</section>
+
+					<section>
+						<p>List downloaded images</p>
+						<pre><code class="bash hljs">
+  docker images [OPTIONS] [REPOSITORY[:TAG]]
+						</code></pre>
+					</section>
+
+					<section>
+						<p>Run a command in a running container</p>
+						<pre><code class="bash hljs">
+  docker exec [OPTIONS] CONTAINER COMMAND [ARG...]
+						</code></pre>
+					</section>
+
+					<section>
+						<p>List running containers</p>
+						<pre><code class="bash hljs">
+  docker ps [OPTIONS]
+						</code></pre>
+					</section>
+
+					<section>
+						<p>List stopped containers</p>
+						<pre><code class="bash hljs">
+  docker ps -a
+						</code></pre>
+					</section>
+
+					<section>
+						<p>Stop running containers</p>
+						<pre><code class="bash hljs">
+  docker stop [OPTIONS] CONTAINER [CONTAINER...]
+						</code></pre>
+          </section>
+
+          <section>
+            <p>Remove one or more containers</p>
+            <pre><code class="bash hljs">
+  docker rm [OPTIONS] CONTAINER [CONTAINER...]
+            </code></pre>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>Single service</h2>
+          </section>
+
+          <section>
+            <pre><code class="bash hljs">
+  docker run -d -p 8080:80 drupal:7.58
+            </code></pre>
+          </section>
+
+          <section>
+            <p>Check the running containers</p>
+            <pre><code class="bash hljs">
+  docker ps
+  CONTAINER ID        IMAGE               COMMAND                  CREATED              STATUS              PORTS                  NAMES
+  949b1aaa0bbd        drupal:7.58         "docker-php-entrypoi…"   About a minute ago   Up About a minute   0.0.0.0:8080->80/tcp   inspiring_kirch
+            </code></pre>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>Multiple services</h2>
+          </section>
+
+          <section>
+            <p>Setup the MySQL service</p>
+            <pre><code class="bash hljs">
+  docker run -d --name=db -e MYSQL_DATABASE=default \
+  -e MYSQL_ROOT_PASSWORD=root mysql:5.6
+            </code></pre>
+          </section>
+
+          <section>
+            <p>Setup the web service</p>
+            <pre><code class="bash hljs">
+  docker run -d --name=web -p 8080:80 \
+  --link db:db drupal:7.58
+            </code></pre>
+          </section>
+
+          <section>
+            <p>Setup the DB administration tool</p>
+            <pre><code class="bash hljs">
+  docker run -d --name=phpmyadmin -p 8081:80 \
+  -e MYSQL_ROOT_PASSWORD=root --link db:db phpmyadmin/phpmyadmin
+            </code></pre>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>Docker Volumes</h2>
+          </section>
+
+          <section>
+            <p>Setup the MySQL service <i>with persistent data</i></p>
+            <pre><code class="bash hljs">
+  docker run -d --name db -e MYSQL_DATABASE=default \
+  -e MYSQL_ROOT_PASSWORD=root \
+  -v `pwd`/dbdata:/var/lib/mysql mysql:5.6
+            </code></pre>
+          </section>
+
+          <section>
+            <p>Setup the web service <i>with persistent data</i></p>
+            <pre><code class="bash hljs">
+  docker run -d --name=web -p 8080:80 --link db:db \
+  -v `pwd`/drupal-7.59:/var/www/html drupal:7.58
+            </code></pre>
+          </section>
+        </section>
+
+				<!-- As we add more containers building and running these containers can be a pain
+				thus docker-compose -->
+				<section>
+					<h2>Docker Compose</h2>
+					<p>Lets us define all our services in one configuration file.</p>
+          <p>With one command, it starts all the services we need.</p>
+				</section>
+
+        <section>
+          <section>
+            <h2>Docker Compose Commands</h2>
+          </section>
+
+          <section>
+            <p>Start defined services</p>
+            <pre><code class="bash hljs">
+  docker-compose up [options] [--scale SERVICE=NUM...] [SERVICE...]
+            </code></pre>
+          </section>
+
+          <section>
+            <p>Build or rebuild services</p>
+            <pre><code class="bash hljs">
+  docker-compose build [options]
+            </code></pre>
+          </section>
+
+          <section>
+            <p>Stop running services</p>
+            <pre><code class="bash hljs">
+  docker-compose stop [options] [SERVICE...]
+            </code></pre>
+          </section>
+
+          <section>
+            <p>Stops containers and removes containers, networks, volumes, and images</p>
+            <pre><code class="bash hljs">
+  docker-compose down [options]
+            </code></pre>
+          </section>
+        </section> 
+
+        <section>
+          <p>docker-compose.yml</p>
+          <pre class="small-code" style="height: 90%;"><code class="bash hljs">
+  version: "3"
+  services:
+    web:
+      image: drupal:7.58
+      volumes:
+        - ./drupal-7.59:/var/www/html
+      ports:
+        - 8080:80
+    db:
+      image: mysql:5.6
+      volumes:
+        - ./dbdata:/var/lib/mysql
+      environment:
+        MYSQL_USER: root
+        MYSQL_PASSWORD: root
+        MYSQL_ROOT_PASSWORD: root
+        MYSQL_DATABASE: default
+    phpmyadmin:
+      image: phpmyadmin/phpmyadmin
+      ports:
+        - 8081:80
+      environment:
+        MYSQL_ROOT_PASSWORD: root
+    drush:
+      image: drush/drush:8
+      volumes:
+        - ./drupal-7.59:/app
+          </code></pre>
+        </section>
+      </section>
+
+      <section>
+        <section>
+          <h2>Docker with Drush</h2>
+        </section>
+
+        <section>
+          <pre><code class="bash hljs">
+  ...
+  drush:
+    image: drush/drush:8
+    volumes:
+      - ./drupal-7.59:/app
+          </code></pre>
+        </section>
+
+        <section>
+          <pre><code class="bash hljs">
+  docker-compose run --rm drush [COMMANDS]
+          </code></pre>
+        </section>
+
+        <section>
+          <pre><code class="bash hljs">
+  #!/usr/bin/env bash
+  drush="docker-compose run --rm drush"
+  $drush sql-drop -y
+  pv ./backup.sql | docker exec -i projectname_db_1 mysql -u root -proot default
+  $drush cr
+  $drush updb --entity-updates -y
+  $drush cim -y
+  $drush cr
+  $drush upwd admin admin
+          </code></pre>
+        </section>
+      </section>
+
+      <section>
+        <h2>Q & A</h2>
+      </section>
+
+      <section>
+        <h2>Thank you</h2>
+      </section>
 			</div>
 		</div>
 
