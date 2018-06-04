@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>Drupal Camp Manila 2018 | Drupal development with Docker</title>
+		<title>Drupal development with Docker</title>
 
 		<link rel="stylesheet" href="css/reveal.css">
 		<link rel="stylesheet" href="css/theme/drupalcamp.css">
@@ -40,24 +40,9 @@
 					<h1 style="font-size: 2em;">Drupal development with Docker</h1>
         </section>
 
-        <section>
-          <h2>About me</h2>
-        </section>
-
-				<section>
-					<h2>About you</h2>
-					<aside class="notes">
-						<ul>
-							<li>Who has heared about Docker?</li>
-							<li>Who has installed Docker in machine?</li>
-							<li>Who has tried using Docker for development?</li>
-						</ul>
-					</aside>
-				</section>
-
 				<section>
 					<blockquote>
-						&ldquo;Works in my machine&ldquo;
+						&ldquo;It works on my machine&ldquo;
 					</blockquote>
 				</section>
 
@@ -120,7 +105,13 @@
 							</ul>
 						</aside>
 					</section>
-				</section>
+        </section>
+
+        <section>
+          <h2>Docker Hub</h2>
+          <span>https://hub.docker.com</span>
+          <img src="images/dockerhub.png" alt="" style="width: 70%;">
+        </section>
 
 				<section>
 					<h2>Dockerfile</h2>
@@ -277,9 +268,11 @@
 				<!-- As we add more containers building and running these containers can be a pain
 				thus docker-compose -->
 				<section>
-					<h2>Docker Compose</h2>
-					<p>Lets us define all our services in one configuration file.</p>
-          <p>With one command, it starts all the services we need.</p>
+          <h2>Docker Compose</h2>
+          <ul>
+            <li class="fragment">Defines all services we need in one configuration file</li>
+            <li class="fragment">Starts all the services we need with one command</li>
+          </ul>
 				</section>
 
         <section>
@@ -288,7 +281,7 @@
           </section>
 
           <section>
-            <p>Start defined services</p>
+            <p>Create and start containers</p>
             <pre><code class="bash hljs">
   docker-compose up [options] [--scale SERVICE=NUM...] [SERVICE...]
             </code></pre>
@@ -368,20 +361,6 @@
         <section>
           <pre><code class="bash hljs">
   docker-compose run --rm drush [COMMANDS]
-          </code></pre>
-        </section>
-
-        <section>
-          <pre><code class="bash hljs">
-  #!/usr/bin/env bash
-  drush="docker-compose run --rm drush"
-  $drush sql-drop -y
-  pv ./backup.sql | docker exec -i projectname_db_1 mysql -u root -proot default
-  $drush cr
-  $drush updb --entity-updates -y
-  $drush cim -y
-  $drush cr
-  $drush upwd admin admin
           </code></pre>
         </section>
       </section>
